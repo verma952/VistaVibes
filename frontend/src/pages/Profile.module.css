@@ -1,19 +1,32 @@
 .profileContainer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 40px 20px;
   background: #f7f9fc;
   min-height: 100vh;
+  gap: 40px; /* Space between card and grid on mobile */
+}
+
+/* On larger screens, show side-by-side */
+@media (min-width: 768px) {
+  .profileContainer {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 40px; /* Space between card and image grid */
+  }
 }
 
 .card {
   background: white;
   padding: 30px;
-  max-width: 500px;
+  max-width: 400px;
   width: 100%;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   text-align: center;
+  flex-shrink: 0;
 }
 
 .avatar img {
