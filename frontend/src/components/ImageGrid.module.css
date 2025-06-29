@@ -1,0 +1,106 @@
+/* === FILE: components/ImageGrid.module.css === */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
+}
+
+.profileIcon {
+  font-size: 20px;
+  color: #4c4c4c;
+}
+
+.image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s;
+}
+
+.actions button:hover {
+  color: #111;
+}
+
+.liked {
+  color: red !important;
+}
+
+.downloadBtn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s;
+}
+
+.downloadBtn:hover {
+  color: #111;
+}
+.deleteBtn {
+  background: none;
+  border: none;
+  margin-left: auto;
+  cursor: pointer;
+  color: #e74c3c;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.deleteBtn:hover {
+  color: #c0392b;
+}

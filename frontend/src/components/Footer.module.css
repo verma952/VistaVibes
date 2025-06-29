@@ -1,0 +1,84 @@
+/* === FILE: components/Footer.module.css === */
+
+.footer {
+  background-color: #111827;
+  color: #e5e7eb;
+  padding: 40px 20px 10px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.left {
+  flex: 1;
+  min-width: 250px;
+}
+
+.left h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.left p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.right {
+  flex: 1;
+  min-width: 200px;
+}
+
+.right h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.right li {
+  margin-bottom: 8px;
+}
+
+.right a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.right a:hover {
+  color: #ffffff;
+}
+
+.socials a {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.socials a:hover {
+  color: #ffffff;
+}
+
+.copy {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 12px;
+  color: #6b7280;
+  border-top: 1px solid #1f2937;
+  margin-top: 20px;
+}
