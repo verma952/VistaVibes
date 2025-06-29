@@ -1,24 +1,48 @@
+// === FILE: routes/imageRoutes.js ===
 const express = require('express');
-const { getAllImages, getImageById, uploadImage, deleteImage, likeImage, commentImage, downloadImage } = require('../controllers/imageController');
+const multer = require('multer');
+const path = require('path');
+const {
+  getAllImages,
+  getImageById,
+  uploadImage,
+  deleteImage,
+  likeImage,
+  commentImage,
+  downloadImage
+} = require('../controllers/imageController');
 const { verifyToken } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-// ✅ Add this missing route
+// 🔧 Configure multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // make sure this folder exists
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `image-${Date.now()}${path.extname(file.originalname)}`;
+    cb(null, uniqueName);
+  }
+});
+
+const upload = multer({ storage });
+
+// ✅ Route to get all images
 router.get('/all', getAllImages);
 
-// Upload image (authenticated)
-router.post('/upload', verifyToken, uploadImage);
+// ✅ Route to upload an image (with file middleware)
+router.post('/upload', verifyToken, upload.single('image'), uploadImage);
 
-// Get single image
+// ✅ Route to get single image by ID
 router.get('/:id', getImageById);
 
-// Delete image
+// ✅ Route to delete an image
 router.delete('/:id', verifyToken, deleteImage);
 
-// Likes, comments, downloads
+// ✅ Routes for likes, comments, downloads
 router.post('/:id/like', verifyToken, likeImage);
 router.post('/:id/comment', verifyToken, commentImage);
-router.post('/:id/download', downloadImage);
+router.post('/:id/download', downloadImage); // optional: no token
 
 module.exports = router;

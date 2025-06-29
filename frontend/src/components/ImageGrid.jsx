@@ -3,10 +3,10 @@ import {
   FaHeart,
   FaRegComment,
   FaDownload,
-  FaUserCircle,
   FaTrashAlt
 } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../auth/AuthContext';
 
 const STATIC = import.meta.env.VITE_STATIC_URL || 'http://localhost:5000';
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -28,30 +28,39 @@ export default function ImageGrid({ images, showUploader = false, showDelete = f
 }
 
 function ImageCard({ img, showUploader, showDelete, onDelete }) {
+  const { user } = useAuth();
+
   const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(img.likes || 0);
+  const [likes, setLikes] = useState(Array.isArray(img.likes) ? img.likes.length : img.likes || 0);
+
   const [comments] = useState(img.comments?.length || 0);
   const [downloads, setDownloads] = useState(img.downloads || 0);
 
- const toggleLike = async () => {
-  try {
-    const res = await fetch(`${API}/images/${img._id}/like`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('vistavibes-token')}`,
-      },
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setLiked(data.liked);
-      setLikes(data.likes);
-    } else {
-      alert(data.message || 'Failed to like');
-    }
-  } catch (err) {
-    console.error('Like error:', err);
+  useEffect(() => {
+  if (user && Array.isArray(img.likes) && img.likes.includes(user.id)) {
+    setLiked(true);
   }
-};
+}, [user, img.likes]);
+
+  const toggleLike = async () => {
+    try {
+      const res = await fetch(`${API}/images/${img._id}/like`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('vistavibes-token')}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setLiked(data.liked);
+        setLikes(data.likes);
+      } else {
+        alert(data.message || 'Failed to like');
+      }
+    } catch (err) {
+      console.error('Like error:', err);
+    }
+  };
 
   const handleDownload = async () => {
     try {
@@ -96,12 +105,17 @@ function ImageCard({ img, showUploader, showDelete, onDelete }) {
     }
   };
 
+  const uploaderName = img.uploadedBy?.name || 'VistaVibes';
+  const uploaderAvatar = img.uploadedBy?.profilePic
+    ? `${STATIC}${img.uploadedBy.profilePic}`
+    : '/default-avatar.png';
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <FaUserCircle className={styles.profileIcon} />
+        <img src={uploaderAvatar} alt="Uploader" className={styles.avatar} />
         <span className={styles.username}>
-          {showUploader && img.uploadedBy?.name ? img.uploadedBy.name : 'VistaVibes'}
+          {showUploader ? uploaderName : 'VistaVibes'}
         </span>
         {showDelete && (
           <button className={styles.deleteBtn} onClick={handleDelete}>

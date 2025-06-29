@@ -1,16 +1,17 @@
-// src/components/UploadForm.jsx
 import { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import styles from './UploadForm.module.css';
 
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const { token } = useAuth();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!token) {
@@ -18,34 +19,46 @@ export default function UploadForm() {
       return;
     }
 
+    if (!file || !title) {
+      alert('Please provide all required fields.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('image', file);
     formData.append('title', title);
 
-    try {
-      setLoading(true);
-      const res = await fetch(`${API}/images/upload`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${API}/images/upload`);
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 
-      const data = await res.json();
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const percent = Math.round((e.loaded / e.total) * 100);
+        setUploadProgress(percent);
+      }
+    };
+
+    xhr.onload = () => {
       setLoading(false);
-
-      if (res.ok) {
+      if (xhr.status === 201) {
         alert('✅ Uploaded successfully!');
         setFile(null);
         setTitle('');
+        setUploadProgress(0);
       } else {
-        alert(data.message || '❌ Upload failed.');
+        const response = JSON.parse(xhr.responseText);
+        alert(response.message || '❌ Upload failed.');
       }
-    } catch (err) {
+    };
+
+    xhr.onerror = () => {
       setLoading(false);
       alert('❌ Network error. Please try again.');
-    }
+    };
+
+    setLoading(true);
+    xhr.send(formData);
   };
 
   return (
@@ -71,12 +84,22 @@ export default function UploadForm() {
           className="mt-1 block w-full border rounded p-2"
         />
       </div>
+
+      {loading && (
+        <div className={styles.progressWrapper}>
+          <div
+            className={styles.progressBar}
+            style={{ width: `${uploadProgress}%` }}
+          ></div>
+        </div>
+      )}
+
       <button
         type="submit"
         disabled={loading}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
       >
-        {loading ? 'Uploading...' : 'Upload'}
+        {loading ? `Uploading... ${uploadProgress}%` : 'Upload'}
       </button>
     </form>
   );
