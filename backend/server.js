@@ -9,13 +9,13 @@ const path = require('path');
 dotenv.config();
 
 
+const app = express();
 app.options('*', cors());
 // Route imports (✅ converted to CommonJS)
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 
-const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Static file serving
