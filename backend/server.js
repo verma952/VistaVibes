@@ -8,6 +8,8 @@ const path = require('path');
 // Load environment variables
 dotenv.config();
 
+
+app.options('*', cors());
 // Route imports (✅ converted to CommonJS)
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -28,7 +30,8 @@ const allowedOrigins = [
 app.use(cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: true,
+   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(helmet());
 app.use((req, res, next) => {
