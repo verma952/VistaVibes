@@ -34,7 +34,9 @@ export default function Navbar() {
 
         <div className={`${styles.links} ${isOpen ? styles.showMenu : ''}`}>
           <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
+          <Link to="/upload">
           <span onClick={() => handleProtectedClick('/upload')}>Upload</span>
+          </Link>
 
           {!user ? (
             <span onClick={() => setShowLogin(true)}>Login</span>

@@ -125,7 +125,7 @@ function ImageCard({ img, showUploader, showDelete, onDelete }) {
       </div>
 
       <img
-        src={`${STATIC}${img.imageUrl}`}
+        src={`${img.imageUrl}`}
         alt={img.title}
         className={styles.image}
       />

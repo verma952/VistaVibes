@@ -1,3 +1,4 @@
+const cloudinary = require('../config/cloudinary');
 const Image = require('../models/Image');
 
 const uploadImage = async (req, res) => {
@@ -7,13 +8,12 @@ const uploadImage = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Image file is required' });
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`;
-
     const image = await Image.create({
       title,
       category,
       tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-      imageUrl,
+      imageUrl: req.file.path,          // ✅ Cloudinary URL
+      publicId: req.file.filename,      // ✅ Cloudinary public ID
       uploadedBy: req.userId
     });
 
@@ -69,6 +69,11 @@ const deleteImage = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Unauthorized' });
     }
 
+    // ✅ Delete from Cloudinary
+    if (image.publicId) {
+      await cloudinary.uploader.destroy(image.publicId);
+    }
+
     await Image.findByIdAndDelete(req.params.id);
     res.status(200).json({ success: true, message: 'Image deleted successfully' });
   } catch (error) {
@@ -87,25 +92,21 @@ const likeImage = async (req, res) => {
     const alreadyLiked = image.likesBy.includes(req.userId);
 
     if (alreadyLiked) {
-      // 👎 Dislike: remove user from likesBy and decrease count
       image.likesBy = image.likesBy.filter(userId => userId.toString() !== req.userId);
       image.likes = Math.max(0, image.likes - 1);
       await image.save();
       return res.status(200).json({ message: 'Unliked', liked: false, likes: image.likes });
     } else {
-      // 👍 Like: add user and increase count
       image.likesBy.push(req.userId);
       image.likes += 1;
       await image.save();
       return res.status(200).json({ message: 'Liked', liked: true, likes: image.likes });
     }
-
   } catch (err) {
     console.error('Like toggle error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 const commentImage = async (req, res) => {
   const { text } = req.body;

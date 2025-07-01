@@ -1,0 +1,79 @@
+/* Upload.module.css */
+
+.container {
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.pageTitle {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #374151;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.input,
+.select,
+.textarea {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: #3b82f6;
+  background-color: #ffffff;
+}
+
+.button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #1e40af;
+}
+
+.button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.loader {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 1.2rem;
+  color: #6b7280;
+}
