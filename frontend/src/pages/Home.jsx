@@ -34,6 +34,37 @@ export default function Home() {
         <h1 className={styles.title}>Welcome to VistaVibes</h1>
         <p className={styles.subtitle}>Discover & share beautiful HD wallpapers</p>
       </section>
+      {/* upload your */}
+      <section className={styles.upload}>
+        <p className={styles.uploadText}>
+          Share your own clicked wallpapers with the community. Click the button below to upload.
+        </p>
+        <a href="/upload" className={styles.uploadButton}>
+          Upload Yours
+        </a>
+      </section>
+      <section className={styles.intro}>
+        <h2 className={styles.introTitle}>Explore Our Collection</h2>
+        <p className={styles.introText}>
+          Browse through our extensive collection of high-definition wallpapers, curated to enhance your digital experience.
+        </p>
+          <div className={styles.category}>
+            <h3 className={styles.categoryTitle}>Categories</h3>
+             {/* grid for categories */}
+              <div className={styles.categoryGrid}>
+                <a href="#" className={styles.categoryItem}> Nature</a>
+                <a href="#" className={styles.categoryItem}> Cityscapes</a>
+                <a href="#" className={styles.categoryItem}> Abstract</a>
+                <a href="#" className={styles.categoryItem}> Animals</a>
+                <a href="#" className={styles.categoryItem}> Technology</a>
+                <a href="#" className={styles.categoryItem}> People</a>
+                <a href="#" className={styles.categoryItem}> Food</a>
+                <a href="#" className={styles.categoryItem}> Landscapes</a>
+                <a href="#" className={styles.categoryItem}> Space</a>
+                <a href="#" className={styles.categoryItem}>Other</a>
+              </div>
+          </div>
+      </section>
 
       <section className={styles.gallery}>
         {loading ? (

@@ -39,20 +39,22 @@ export default function Navbar() {
           </Link>
 
           {!user ? (
-            <span onClick={() => setShowLogin(true)}>Login</span>
+           <Link> <span onClick={() => setShowLogin(true)}>Login</span>
+           </Link>
           ) : (
             <>
               <Link to="/profile" onClick={() => setIsOpen(false)}>Profile</Link>
-              <button
+              <Link><button
                 onClick={() => {
                   logout();
                   setIsOpen(false);
                   navigate('/');
                 }}
                 className={styles.logoutButton}
-              >
+                >
                 Logout
               </button>
+              </Link>
             </>
           )}
         </div>

@@ -13,21 +13,21 @@ import { AuthProvider, useAuth } from './auth/AuthContext';
 import Loader from './components/Loader';
 
 function AppRoutes() {
-  const { loadingAuth } = useAuth(); // <-- must be provided by AuthContext
-
-  if (loadingAuth) return <Loader />;
+  const { loading } = useAuth();
 
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/image/:id" element={<ImageView />} />
+        
+        <Route path="/" element={
+         loading ? <Loader /> : <Home />} />
+        <Route path="/upload" element={loading ? <Loader/>:<Upload />} />
+        <Route path="/profile" element={loading ? <Loader/>:<Profile />} />
+        <Route path="/image/:id" element={loading ? <Loader/>:<ImageView />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/verify-otp" element={<VerifyOtp />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/verify-otp" element={loading ? <Loader/>:<VerifyOtp />} />
+        <Route path="/about" element={loading ? <Loader/>:<About />} />
       </Routes>
       <Footer />
     </>

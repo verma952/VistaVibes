@@ -1,23 +1,45 @@
-/* src/components/Loader.module.css */
 .loaderWrapper {
+  height: 100vh;
   display: flex;
+  flex-direction: column;
+  gap: 12px;
   justify-content: center;
   align-items: center;
-  height: 80vh;
-  width: 100%;
+  background: #ffffff;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .loader {
-  width: 60px;
-  height: 60px;
-  border: 8px solid #eee;
-  border-top: 8px solid #007bff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+  display: flex;
+  gap: 12px;
 }
 
-@keyframes spin {
+.dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #00c6ff;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
   to {
-    transform: rotate(360deg);
+    transform: translateY(-20px);
+    background: #0072ff;
   }
+}
+
+.loadingText {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }

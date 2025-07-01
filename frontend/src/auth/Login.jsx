@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styles from './Login.module.css'; // Assuming you have a CSS module for styling
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function Login() {
@@ -36,9 +37,9 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <h2>Login to VistaVibes</h2>
-      <form onSubmit={sendOtp} className="form">
+      <form className = {styles.form} onSubmit={sendOtp}>
         <input
           type="email"
           placeholder="Enter your email"
