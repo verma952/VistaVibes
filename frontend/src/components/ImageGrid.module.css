@@ -2,7 +2,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, .5fr));
   gap: 20px;
   padding: 20px;
 }
@@ -11,7 +11,7 @@
   background: white;
   border-radius: 10px;
   overflow: hidden;
-   box-shadow : 0 4px 4px 4px rgba(0, 0, 0, 0.2)  ;
+  box-shadow: 0 4px 4px 4px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease;
@@ -37,11 +37,20 @@
 }
 
 .image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+  width:100%;
+  height: 300px;; /* Fixed height for uniformity */
+  object-fit: contain; /* Show full image */
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.caption {
+  font-size: 18px;
+  color: #740bf4;
+  margin: 5px;
+  text-align: center;
 }
 
 .footer {
@@ -50,11 +59,7 @@
   align-items: center;
   padding: 10px 15px;
 }
-.caption {
-  font-size: 18px;
-  color: #740bf4;
-  margin:5px;
-}
+
 .actions {
   display: flex;
   gap: 15px;
@@ -95,6 +100,7 @@
 .downloadBtn:hover {
   color: #111;
 }
+
 .deleteBtn {
   background: none;
   border: none;
@@ -108,10 +114,41 @@
 .deleteBtn:hover {
   color: #c0392b;
 }
+
 .avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
   margin-right: 8px;
+}
+
+.username {
+  font-weight: 500;
+  color: #444;
+  font-size: 14px;
+}
+
+/* === Image Preview Modal Styles === */
+
+.previewOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+.previewImage {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s;
 }

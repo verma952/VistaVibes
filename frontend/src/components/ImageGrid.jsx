@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import styles from './ImageGrid.module.css';
 import {
   FaHeart,
@@ -5,42 +6,51 @@ import {
   FaDownload,
   FaTrashAlt
 } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
 import { useAuth } from '../auth/AuthContext';
 
 const STATIC = import.meta.env.VITE_STATIC_URL || 'http://localhost:5000';
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function ImageGrid({ images, showUploader = false, showDelete = false, onDelete }) {
+  const [previewImage, setPreviewImage] = useState(null);
+
   return (
-    <div className={styles.grid}>
-      {images.map((img) => (
-        <ImageCard
-          key={img._id}
-          img={img}
-          showUploader={showUploader}
-          showDelete={showDelete}
-          onDelete={onDelete}
-        />
-      ))}
-    </div>
+    <>
+      <div className={styles.grid}>
+        {images.map((img) => (
+          <ImageCard
+            key={img._id}
+            img={img}
+            showUploader={showUploader}
+            showDelete={showDelete}
+            onDelete={onDelete}
+            onPreview={() => setPreviewImage(img.imageUrl)}
+          />
+        ))}
+      </div>
+
+      {previewImage && (
+        <div className={styles.previewOverlay} onClick={() => setPreviewImage(null)}>
+          <img src={previewImage} alt="Preview" className={styles.previewImage} />
+        </div>
+      )}
+    </>
   );
 }
 
-function ImageCard({ img, showUploader, showDelete, onDelete }) {
+function ImageCard({ img, showUploader, showDelete, onDelete, onPreview }) {
   const { user } = useAuth();
 
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(Array.isArray(img.likes) ? img.likes.length : img.likes || 0);
-
   const [comments] = useState(img.comments?.length || 0);
   const [downloads, setDownloads] = useState(img.downloads || 0);
 
   useEffect(() => {
-  if (user && Array.isArray(img.likes) && img.likes.includes(user.id)) {
-    setLiked(true);
-  }
-}, [user, img.likes]);
+    if (user && Array.isArray(img.likes) && img.likes.includes(user.id)) {
+      setLiked(true);
+    }
+  }, [user, img.likes]);
 
   const toggleLike = async () => {
     try {
@@ -72,10 +82,16 @@ function ImageCard({ img, showUploader, showDelete, onDelete }) {
         setDownloads(data.downloads);
       }
 
+      const imageUrl = img.imageUrl.startsWith('http')
+        ? img.imageUrl
+        : `${STATIC}${img.imageUrl}`;
+
       const link = document.createElement('a');
-      link.href = `${STATIC}${img.imageUrl}`;
+      link.href = imageUrl;
       link.download = img.title || 'vistavibes_image';
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } catch (err) {
       console.error('Download error:', err);
     }
@@ -125,9 +141,10 @@ function ImageCard({ img, showUploader, showDelete, onDelete }) {
       </div>
 
       <img
-        src={`${img.imageUrl}`}
+        src={img.imageUrl}
         alt={img.title}
         className={styles.image}
+        onClick={onPreview}
       />
 
       {img.title && <p className={styles.caption}>{img.title}</p>}
