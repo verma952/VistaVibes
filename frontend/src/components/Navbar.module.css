@@ -54,7 +54,16 @@
   cursor: pointer;
   color: #2d6cdf;
 }
-
+.logoutButton {
+  background-color: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+button {
+  background: none;
+}
 @media (max-width: 768px) {
   .menuToggle {
     display: block;

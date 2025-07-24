@@ -1,4 +1,5 @@
 // === FILE: App.jsx ===
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -12,8 +13,17 @@ import VerifyOtp from './auth/VerifyOtp';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import Loader from './components/Loader';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 function AppRoutes() {
   const { loading } = useAuth();
+
+   useEffect(() => {
+    const visited = localStorage.getItem('vistavibes_visited');
+    if (!visited) {
+      fetch(`${API_URL}/visits`, { method: 'POST' }); // Only counts once per browser
+      localStorage.setItem('vistavibes_visited', 'true');
+    }
+  }, []);
 
   return (
     <>

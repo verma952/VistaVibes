@@ -1,9 +1,19 @@
 // === FILE: components/Footer.jsx ===
+import React, { useEffect, useState } from 'react';
 import styles from './Footer.module.css';
 import { FaInstagram, FaGithub, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
+  
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/visits`)
+      .then(res => res.json())
+      .then(data => setCount(data.count));
+  }, []);
+
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -25,6 +35,9 @@ export default function Footer() {
             <a href="https://www.youtube.com/@vasu_developer" target="_blank" rel="noreferrer"><FaYoutube /></a>
           </div>
         </div>
+      </div>
+      <div className={styles.visitCount}>
+        <p>Total Visiters: {count}</p>
       </div>
       <div className={styles.copy}>© 2025 VistaVibes. All rights reserved.</div>
     </footer>
